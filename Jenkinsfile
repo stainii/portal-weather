@@ -4,7 +4,6 @@ pipeline {
       image 'stainii/portal-web-app-base:jdk-14'
       args '-v /root/.m2:/root/.m2'
     }
-
   }
   stages {
     stage('Build') {
@@ -16,9 +15,7 @@ pipeline {
       post {
         always {
           junit 'target/surefire-reports/*.xml'
-
         }
-
       }
       steps {
         sh 'mvn integration-test'
