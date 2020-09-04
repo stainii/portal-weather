@@ -1,4 +1,6 @@
 # Portal Weather
+[![Build Status](https://server.stijnhooft.be/jenkins/buildStatus/icon?job=portal-weather/master)](https://server.stijnhooft.be/jenkins/job/portal-weather/job/master/)
+
 A REST service providing weather functionality. At this moment, it has one endpoint to retrieve forecasts.
 
 ## Supported external weather APIs
