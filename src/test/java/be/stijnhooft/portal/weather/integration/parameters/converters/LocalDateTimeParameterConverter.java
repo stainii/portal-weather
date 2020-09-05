@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather.parameters.converters;
+package be.stijnhooft.portal.weather.integration.parameters.converters;
 
 import org.jbehave.core.steps.ParameterConverters;
 

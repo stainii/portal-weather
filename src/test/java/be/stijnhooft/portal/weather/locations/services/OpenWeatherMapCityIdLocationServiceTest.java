@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class OpenWeatherMapCityIdLocationServiceTest {
@@ -26,4 +25,13 @@ class OpenWeatherMapCityIdLocationServiceTest {
         assertThat(service.canProvide(LatitudeLongitude.class)).isFalse();
     }
 
+    @Test
+    void mapWhenFound() {
+        assertThat(service.map("Zottegem", OpenWeatherMapCityId.class)).contains(new OpenWeatherMapCityId("2783175"));
+    }
+
+    @Test
+    void mapWhenNotFound() {
+        assertThat(service.map("Gekkegem", OpenWeatherMapCityId.class)).isEmpty();
+    }
 }

@@ -1,14 +1,16 @@
 package be.stijnhooft.portal.weather;
 
-import be.stijnhooft.portal.weather.forecast.Forecast;
-import be.stijnhooft.portal.weather.forecast.Interval;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Interval;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;

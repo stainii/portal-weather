@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather;
 
-import be.stijnhooft.portal.weather.forecast.Forecast;
-import be.stijnhooft.portal.weather.forecast.Interval;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Interval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DateHelperTest {
 

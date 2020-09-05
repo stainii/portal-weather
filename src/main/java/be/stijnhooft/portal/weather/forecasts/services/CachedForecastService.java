@@ -1,19 +1,16 @@
-package be.stijnhooft.portal.weather.forecast.services;
+package be.stijnhooft.portal.weather.forecasts.services;
 
 import be.stijnhooft.portal.weather.DateHelper;
 import be.stijnhooft.portal.weather.cache.ForecastCacheKey;
-import be.stijnhooft.portal.weather.forecast.Forecast;
-import be.stijnhooft.portal.weather.forecast.Interval;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Interval;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

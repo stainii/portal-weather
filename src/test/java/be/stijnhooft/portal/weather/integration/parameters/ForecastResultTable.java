@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather.parameters;
+package be.stijnhooft.portal.weather.integration.parameters;
 
 import lombok.*;
 import org.jbehave.core.annotations.AsParameters;

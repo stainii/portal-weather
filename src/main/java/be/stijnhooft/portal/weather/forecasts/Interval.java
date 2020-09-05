@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather.forecast;
+package be.stijnhooft.portal.weather.forecasts;
 
 import lombok.Value;
 
@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+@SuppressWarnings("RedundantModifiersValueLombok")
 @Value
 public class Interval {
     private LocalDateTime startDateTime;

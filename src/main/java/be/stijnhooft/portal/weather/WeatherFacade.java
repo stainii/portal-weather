@@ -1,9 +1,9 @@
 package be.stijnhooft.portal.weather;
 
-import be.stijnhooft.portal.weather.forecast.Forecast;
-import be.stijnhooft.portal.weather.forecast.Interval;
-import be.stijnhooft.portal.weather.forecast.services.CachedForecastService;
-import be.stijnhooft.portal.weather.forecast.services.ForecastService;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Interval;
+import be.stijnhooft.portal.weather.forecasts.services.CachedForecastService;
+import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.locations.services.CachedLocationService;
 import be.stijnhooft.portal.weather.locations.services.LocationService;
 import be.stijnhooft.portal.weather.locations.types.Location;

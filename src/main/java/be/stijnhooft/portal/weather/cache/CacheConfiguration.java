@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.cache;
 
-import be.stijnhooft.portal.weather.forecast.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Nullable;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.List;
 
 import static java.time.temporal.ChronoUnit.HOURS;
 
@@ -44,6 +43,7 @@ public class CacheConfiguration {
         return buildPersistenceStorageCache("forecasts", ForecastCacheKey.class, Forecast.class, forecastsCacheMaxNumberOfEntries, Duration.of(forecastsCacheTimeToLiveInHours, HOURS));
     }
 
+    @SuppressWarnings("rawtypes")
     private <K, V> Cache<K, V> buildPersistenceStorageCache(String cacheName, Class<K> keyType, Class<V> valueType, int maxNumberOfEntries, @Nullable Duration timeToLive) {
         CacheManagerBuilder cacheManagerCacheManagerBuilder = CacheManagerBuilder.newCacheManagerBuilder();
 

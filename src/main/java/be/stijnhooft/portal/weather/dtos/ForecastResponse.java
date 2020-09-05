@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.dtos;
 
-import be.stijnhooft.portal.weather.forecast.Forecast;
+import be.stijnhooft.portal.weather.forecasts.Forecast;
 import lombok.Builder;
 import lombok.Data;
 

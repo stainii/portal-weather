@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather.forecast;
+package be.stijnhooft.portal.weather.forecasts;
 
 import lombok.Builder;
 import lombok.Data;
