@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -51,26 +52,43 @@ public class WeatherFacade {
         while (!remainingDays.isEmpty() && forecastServiceIterator.hasNext()) {
             ForecastService<?> forecastService = forecastServiceIterator.next();
 
-            // find location or skip to next forecast service
-            Class<? extends Location> locationType = forecastService.supportedLocationType();
-            Optional<? extends Location> location = mapLocation(locationUserInput, locationType);
+            Optional<? extends Location> location = findAndCacheLocation(locationUserInput, forecastService);
             if (location.isEmpty()) {
                 continue;
             }
-            cachedLocationService.addToCacheIfNotPresent(locationUserInput, locationType, location.get());
 
-            // find forecasts
-            Collection<Interval> intervals = dateHelper.determineIntervals(remainingDays);
-            var foundForecasts = forecastService.query(location.get(), intervals);
-            cachedForecastService.addToCacheIfNotPresent(location.get(), foundForecasts);
+            Collection<Forecast> foundForecasts = findAndCacheForecasts(forecastService, remainingDays, location.get());
             forecasts.addAll(foundForecasts);
 
-            // any days without results remaining?
             remainingDays = dateHelper.determineMissingDays(forecasts, remainingDays);
         }
 
         return forecasts;
     }
+
+    @NotNull
+    private Optional<? extends Location> findAndCacheLocation(String locationUserInput, ForecastService<?> forecastService) {
+        Class<? extends Location> locationType = forecastService.supportedLocationType();
+        Optional<? extends Location> location = mapLocation(locationUserInput, locationType);
+        location.ifPresent(value -> cachedLocationService.addToCacheIfNotPresent(locationUserInput, locationType, value));
+        return location;
+    }
+
+    @NotNull
+    private Collection<Forecast> findAndCacheForecasts(ForecastService<?> forecastService, Collection<LocalDate> remainingDays, Location location) {
+        Collection<Interval> intervals = dateHelper.determineIntervals(remainingDays);
+        var foundForecasts = forecastService.query(location, intervals);
+
+        // Forecast services are allowed to return more days than requested, if that helps them make less (though more course-grained) requests.
+        // We cache these extra results, but don't send them back to the user at this point
+        // TODO test this behaviour
+        cachedForecastService.addToCacheIfNotPresent(location, foundForecasts);
+        return foundForecasts.stream()
+                .filter(forecast -> remainingDays.contains(forecast.getDate()))
+                .collect(Collectors.toList());
+    }
+
+
 
     public void registerForecastService(ForecastService<? extends Location> forecastService) {
         forecastServices.add(forecastService);
