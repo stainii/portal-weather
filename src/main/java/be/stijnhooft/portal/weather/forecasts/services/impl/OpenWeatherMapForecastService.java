@@ -1,9 +1,10 @@
-package be.stijnhooft.portal.weather.forecasts.services;
+package be.stijnhooft.portal.weather.forecasts.services.impl;
 
-import be.stijnhooft.portal.weather.forecasts.Forecast;
-import be.stijnhooft.portal.weather.forecasts.Interval;
+import be.stijnhooft.portal.weather.dtos.Interval;
+import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
+import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.locations.types.Location;
-import be.stijnhooft.portal.weather.locations.types.OpenWeatherMapCityId;
+import be.stijnhooft.portal.weather.locations.types.impl.OpenWeatherMapCityId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather.forecasts;
+package be.stijnhooft.portal.weather.dtos;
 
 import lombok.Value;
 

@@ -1,5 +1,6 @@
-package be.stijnhooft.portal.weather.locations.types;
+package be.stijnhooft.portal.weather.locations.types.impl;
 
+import be.stijnhooft.portal.weather.locations.types.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

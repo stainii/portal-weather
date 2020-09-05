@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.cache;
 
-import be.stijnhooft.portal.weather.locations.types.LatitudeLongitude;
-import be.stijnhooft.portal.weather.locations.types.OpenWeatherMapCityId;
+import be.stijnhooft.portal.weather.locations.types.impl.LatitudeLongitude;
+import be.stijnhooft.portal.weather.locations.types.impl.OpenWeatherMapCityId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

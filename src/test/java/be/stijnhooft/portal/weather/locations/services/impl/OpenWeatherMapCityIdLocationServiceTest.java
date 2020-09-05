@@ -1,7 +1,8 @@
-package be.stijnhooft.portal.weather.locations.services;
+package be.stijnhooft.portal.weather.locations.services.impl;
 
-import be.stijnhooft.portal.weather.locations.types.LatitudeLongitude;
-import be.stijnhooft.portal.weather.locations.types.OpenWeatherMapCityId;
+import be.stijnhooft.portal.weather.locations.services.OpenWeatherMapCityIdLocationService;
+import be.stijnhooft.portal.weather.locations.types.impl.LatitudeLongitude;
+import be.stijnhooft.portal.weather.locations.types.impl.OpenWeatherMapCityId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

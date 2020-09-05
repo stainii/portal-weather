@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.cache;
 
-import be.stijnhooft.portal.weather.forecasts.Forecast;
+import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;

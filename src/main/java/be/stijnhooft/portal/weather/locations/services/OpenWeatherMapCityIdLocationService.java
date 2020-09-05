@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.locations.services;
 
 import be.stijnhooft.portal.weather.locations.types.Location;
-import be.stijnhooft.portal.weather.locations.types.OpenWeatherMapCityId;
+import be.stijnhooft.portal.weather.locations.types.impl.OpenWeatherMapCityId;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 
-// TODO implement
 @Service
 public class OpenWeatherMapCityIdLocationService implements LocationService {
 

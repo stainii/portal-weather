@@ -5,10 +5,10 @@ import be.stijnhooft.portal.weather.PortalWeatherApplication;
 import be.stijnhooft.portal.weather.WeatherFacade;
 import be.stijnhooft.portal.weather.cache.LocationCacheValue;
 import be.stijnhooft.portal.weather.dtos.ForecastRequest;
-import be.stijnhooft.portal.weather.forecasts.Forecast;
-import be.stijnhooft.portal.weather.forecasts.Interval;
-import be.stijnhooft.portal.weather.forecasts.services.CachedForecastService;
+import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
+import be.stijnhooft.portal.weather.forecasts.services.impl.CachedForecastService;
+import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
 import be.stijnhooft.portal.weather.locations.services.CachedLocationService;
 import be.stijnhooft.portal.weather.locations.services.LocationService;
@@ -229,7 +229,7 @@ public class ForecastStepDefinitions {
     @NotNull
     @SneakyThrows
     private Class createLocationTypeFor(String locationType) {
-        return Class.forName("be.stijnhooft.portal.weather.locations.types." + locationType);
+        return Class.forName("be.stijnhooft.portal.weather.locations.types.impl." + locationType);
     }
 
     @NotNull
