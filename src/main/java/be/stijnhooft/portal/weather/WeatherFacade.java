@@ -1,10 +1,9 @@
 package be.stijnhooft.portal.weather;
 
+import be.stijnhooft.portal.weather.cache.CacheService;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
-import be.stijnhooft.portal.weather.forecasts.services.impl.CachedForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
-import be.stijnhooft.portal.weather.locations.services.CachedLocationService;
 import be.stijnhooft.portal.weather.locations.services.LocationService;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import lombok.Setter;
@@ -27,17 +26,14 @@ public class WeatherFacade {
     @Setter
     private Collection<LocationService> locationServices;
 
-    private final CachedForecastService cachedForecastService;
-    private final CachedLocationService cachedLocationService;
+    private final CacheService cacheService;
     private final DateHelper dateHelper;
 
     public WeatherFacade(List<ForecastService<?>> forecastServices, List<LocationService> locationServices,
-                         CachedForecastService cachedForecastService, CachedLocationService cachedLocationService,
-                         DateHelper dateHelper) {
+                         CacheService cacheService, DateHelper dateHelper) {
         this.forecastServices = forecastServices;
         this.locationServices = locationServices;
-        this.cachedForecastService = cachedForecastService;
-        this.cachedLocationService = cachedLocationService;
+        this.cacheService = cacheService;
         this.dateHelper = dateHelper;
     }
 
@@ -73,7 +69,7 @@ public class WeatherFacade {
                 .filter(locationService -> locationService.canProvide(locationType))
                 .flatMap(locationService -> locationService.map(locationUserInput, locationType).stream())
                 .findFirst();
-        location.ifPresent(value -> cachedLocationService.addToCacheIfNotPresent(locationUserInput, locationType, value));
+        location.ifPresent(value -> cacheService.addToCacheIfNotPresent(locationUserInput, locationType, value));
         return location;
     }
 
@@ -85,7 +81,7 @@ public class WeatherFacade {
         // Forecast services are allowed to return more days than requested, if that helps them make less (though more course-grained) requests.
         // We cache these extra results, but don't send them back to the user at this point
         // TODO test this behaviour
-        cachedForecastService.addToCacheIfNotPresent(location, foundForecasts);
+        cacheService.addToCacheIfNotPresent(location, foundForecasts);
         return foundForecasts.stream()
                 .filter(forecast -> remainingDays.contains(forecast.getDate()))
                 .collect(Collectors.toList());

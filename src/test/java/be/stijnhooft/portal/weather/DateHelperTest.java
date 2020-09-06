@@ -5,6 +5,7 @@ import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ class DateHelperTest {
 
     @BeforeEach
     void setUp() {
-        dateHelper = new DateHelper();
+        dateHelper = new DateHelper(Clock.systemDefaultZone());
     }
 
     @Test
@@ -85,11 +86,13 @@ class DateHelperTest {
                 .date(date1)
                 .source("")
                 .location("")
+                .createdAt(LocalDateTime.now())
                 .build();
         var forecast2 = Forecast.builder()
                 .date(date2)
                 .source("")
                 .location("")
+                .createdAt(LocalDateTime.now())
                 .build();
 
         var results = dateHelper.forecastsToDates(List.of(forecast1, forecast2));
@@ -107,11 +110,13 @@ class DateHelperTest {
                 .date(date1)
                 .source("")
                 .location("")
+                .createdAt(LocalDateTime.now())
                 .build();
         var forecast2 = Forecast.builder()
                 .date(date3)
                 .source("")
                 .location("")
+                .createdAt(LocalDateTime.now())
                 .build();
 
         var results = dateHelper.determineMissingDays(List.of(forecast1, forecast2), List.of(date1, date2, date3, date4));

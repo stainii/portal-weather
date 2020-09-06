@@ -4,10 +4,12 @@ import be.stijnhooft.portal.weather.integration.parameters.converters.LocalDateP
 import be.stijnhooft.portal.weather.integration.parameters.converters.LocalDateTimeParameterConverter;
 import net.serenitybdd.jbehave.SerenityStories;
 import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.junit.runners.TestConfiguration;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import org.jbehave.core.configuration.Configuration;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Import;
 
 /**
  * JBehave test which tests the framework, but mocks actual implementations of location/forecast services.
@@ -18,6 +20,7 @@ import org.junit.runner.RunWith;
  * Step definitions: {@see be.stijnhooft.portal.weather.integration.stepdefinitions.ForecastStepDefinitions}
  */
 @RunWith(SerenityRunner.class)
+@Import({TestConfiguration.class, IntegrationTestConfiguration.class})
 public class ForecastStories extends SerenityStories {
 
     @Rule

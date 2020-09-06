@@ -16,13 +16,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class CachedForecastService implements ForecastService<Location> {
+public class LastCachedForecastService implements ForecastService<Location> {
 
     private final Cache<ForecastCacheKey, Forecast> forecastsCache;
     private final DateHelper dateHelper;
 
-    public CachedForecastService(@Qualifier("forecastsCache") Cache<ForecastCacheKey, Forecast> forecastsCache,
-                                 DateHelper dateHelper) {
+    public LastCachedForecastService(@Qualifier("forecastsCache") Cache<ForecastCacheKey, Forecast> forecastsCache,
+                                     DateHelper dateHelper) {
         this.forecastsCache = forecastsCache;
         this.dateHelper = dateHelper;
     }
@@ -45,7 +45,7 @@ public class CachedForecastService implements ForecastService<Location> {
 
     @Override
     public int order() {
-        return 0;
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -58,16 +58,4 @@ public class CachedForecastService implements ForecastService<Location> {
         return getClass().getSimpleName();
     }
 
-    public void clear() {
-        forecastsCache.clear();
-    }
-
-    public void addToCacheIfNotPresent(Location location, Collection<Forecast> forecasts) {
-        forecasts.forEach(forecast -> addToCacheIfNotPresent(location, forecast.getDate(), forecast));
-    }
-
-    public void addToCacheIfNotPresent(Location location, LocalDate date, Forecast forecast) {
-        final String sourceSuffix = " (cached)";
-        forecastsCache.putIfAbsent(new ForecastCacheKey(location, date), forecast.withSource(forecast.getSource().concat(sourceSuffix)));
-    }
 }

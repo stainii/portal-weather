@@ -7,7 +7,6 @@ import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -44,21 +43,4 @@ public class CachedLocationService implements LocationService {
         return getClass().getSimpleName();
     }
 
-    public void clear() {
-        locationsCache.clear();
-    }
-
-    public void addToCacheIfNotPresent(String locationUserInput, Class<? extends Location> locationType, Location location) {
-        LocationCacheValue locationCacheValue = new LocationCacheValue(locationType, location);
-
-        LocationCacheValues locationCacheValues;
-        if (locationsCache.containsKey(locationUserInput)) {
-            locationCacheValues = locationsCache.get(locationUserInput);
-        } else {
-            locationCacheValues = new LocationCacheValues();
-        }
-        locationCacheValues.addIfAbsent(locationCacheValue);
-
-        locationsCache.put(locationUserInput, locationCacheValues);
-    }
 }

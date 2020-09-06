@@ -5,6 +5,7 @@ import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,12 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Component
 public class DateHelper {
+
+    private final Clock clock;
+
+    public DateHelper(Clock clock) {
+        this.clock = clock;
+    }
 
     @NotNull
     public List<LocalDate> getDaysBetween(@NotNull LocalDateTime inclusiveStart, @NotNull LocalDateTime exclusiveEnd) {
@@ -98,5 +105,13 @@ public class DateHelper {
         return intervals.stream()
                 .flatMap(interval -> getDaysBetween(interval.getStartDateTime(), interval.getEndDateTime()).stream())
                 .collect(Collectors.toSet());
+    }
+
+    public LocalDate xDaysAgo(int x) {
+        return LocalDate.now(clock).minus(x, DAYS);
+    }
+
+    public LocalDate xDaysInTheFuture(int x) {
+        return LocalDate.now(clock).plus(x, DAYS);
     }
 }

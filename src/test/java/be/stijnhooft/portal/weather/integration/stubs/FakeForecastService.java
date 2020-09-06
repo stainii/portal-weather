@@ -8,6 +8,7 @@ import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import lombok.Value;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class FakeForecastService implements ForecastService<FakeLocation> {
 
     private final DateHelper dateHelper;
+    private final Clock clock;
 
     private final Class<? extends Location> supportedLocationType;
     private final List<ForecastResultTable> ignoredForecasts;
@@ -24,10 +26,11 @@ public class FakeForecastService implements ForecastService<FakeLocation> {
     private final int order;
     private final List<ForecastQuery> queries;
 
-    public FakeForecastService(String name, Class<? extends Location> supportedLocationType, int order, DateHelper dateHelper) {
+    public FakeForecastService(String name, Class<? extends Location> supportedLocationType, int order, DateHelper dateHelper, Clock clock) {
         this.name = name;
         this.supportedLocationType = supportedLocationType;
         this.order = order;
+        this.clock = clock;
         this.ignoredForecasts = new ArrayList<>();
         this.queries = new ArrayList<>();
         this.dateHelper = dateHelper;
@@ -61,6 +64,7 @@ public class FakeForecastService implements ForecastService<FakeLocation> {
                         .location(locationUserInput)
                         .date(date)
                         .source(name)
+                        .createdAt(LocalDateTime.now(clock))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -91,5 +95,9 @@ public class FakeForecastService implements ForecastService<FakeLocation> {
         String location;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
+    }
+
+    public String toString() {
+        return "ForecastService " + name;
     }
 }

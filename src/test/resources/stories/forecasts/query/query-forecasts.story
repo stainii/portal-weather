@@ -27,7 +27,7 @@ Given I have a forecast service A which expects location type OpenWeatherMapCity
 And I have a forecast service B which expects location type LatitudeLongitude with order 2
 And I have a location service 1 that provides location type OpenWeatherMapCityId
 And I have a location service 2 that provides location type LatitudeLongitude
-And I have queried a forecast for Zottegem between 2020-08-30T00:00:00 and 2020-08-31T00:00:00  and I got a forecast result on 2020-08-30
+And 5 minutes ago I have queried a forecast for Zottegem between 2020-08-30T00:00:00 and 2020-08-31T00:00:00  and I got a forecast result on 2020-08-30
 When I query the forecast for Zottegem between 2020-08-30T00:00:00 and 2020-08-31T00:00:00
 Then I get forecast results:
  |location|date|source|
@@ -45,7 +45,7 @@ Given I have a forecast service A which expects location type OpenWeatherMapCity
 And I have a forecast service B which expects location type LatitudeLongitude with order 2
 And I have a location service 1 that provides location type OpenWeatherMapCityId
 And I have a location service 2 that provides location type LatitudeLongitude
-And I have queried a forecast for Zottegem between 2020-08-30T00:00:00 and 2020-08-31T00:00:00 and I got a forecast result on 2020-08-30
+And 5 minutes ago I have queried a forecast for Zottegem between 2020-08-30T00:00:00 and 2020-08-31T00:00:00 and I got a forecast result on 2020-08-30
 When I query the forecast for Zottegem between 2020-08-30T00:00:00 and 2020-09-01T00:00:00
 Then I get forecast results:
  |location|date|source|
@@ -115,13 +115,54 @@ Given I have a forecast service A which expects location type OpenWeatherMapCity
 And I have a forecast service B which expects location type LatitudeLongitude with order 2
 And I have a location service 1 that provides location type OpenWeatherMapCityId
 And I have a location service 2 that provides location type LatitudeLongitude
-And no forecast for Zottegem at 2020-08-31 can be provided by forecast service A
+And 5 minutes ago I have queried a forecast for Zottegem between 2020-08-31T00:00:00 and 2020-09-01T00:00:00 and I got a forecast result on 2020-08-31
 When I query the forecast for Zottegem between 2020-08-30T00:00:00 and 2020-09-02T00:00:00
 Then I get forecast results:
  |location|date|source|
  |Zottegem|2020-08-30|A|
  |Zottegem|2020-08-31|A (cached)|
  |Zottegem|2020-09-01|A|
+
+
+Scenario: I want to know the forecast for Zottegem between 2020-08-30 and 2020-09-01.
+The forecast for Zottegem at 2020-08-31 is already cached but it has been over an hour ago, so the application checks
+if there is a newer version available.
+Forecast service A should only be queried all 3 dates.
+
+Given I have a forecast service A which expects location type OpenWeatherMapCityId with order 1
+And I have a forecast service B which expects location type LatitudeLongitude with order 2
+And I have a location service 1 that provides location type OpenWeatherMapCityId
+And I have a location service 2 that provides location type LatitudeLongitude
+And 5 hours ago I have queried a forecast for Zottegem between 2020-08-31T00:00:00 and 2020-09-01T00:00:00 and I got a forecast result on 2020-08-31
+When I query the forecast for Zottegem between 2020-08-30T00:00:00 and 2020-09-02T00:00:00
+Then I get forecast results:
+ |location|date|source|
+ |Zottegem|2020-08-30|A|
+ |Zottegem|2020-08-31|A|
+ |Zottegem|2020-09-01|A|
+
+
+Scenario: I want to know the forecast for Zottegem between 2020-08-30 and 2020-09-01.
+The forecast for Zottegem at 2020-08-31 is already cached but it has been over an hour ago, so the application checks
+if there is a newer version available. Forecast service A should only be queried all 3 dates.
+However, at this point in time no service can provide a forecast for 2020-08-30. The application should now still
+use the fallback, possibly outdated, forecast for 2020-08-30 since it's all we got.
+
+Given I have a forecast service A which expects location type OpenWeatherMapCityId with order 1
+And I have a forecast service B which expects location type LatitudeLongitude with order 2
+And I have a location service 1 that provides location type OpenWeatherMapCityId
+And I have a location service 2 that provides location type LatitudeLongitude
+And 5 hours ago I have queried a forecast for Zottegem between 2020-08-31T00:00:00 and 2020-09-01T00:00:00 and I got a forecast result on 2020-08-31
+And no forecast for Zottegem at 2020-08-31 can be provided by forecast service A
+And no forecast for Zottegem at 2020-08-31 can be provided by forecast service B
+When I query the forecast for Zottegem between 2020-08-30T00:00:00 and 2020-09-02T00:00:00
+Then I get forecast results:
+ |location|date|source|
+ |Zottegem|2020-08-30|A|
+ |Zottegem|2020-08-31|A (cached)|
+ |Zottegem|2020-09-01|A|
+
+
 
 Scenario: I want to know the forecast for Zottegem between 2020-08-30 and 2020-08-31.
 I'm retrieving a result for 2020-08-30 but not for 2020-08-31, since the latter is too far away in the future.
