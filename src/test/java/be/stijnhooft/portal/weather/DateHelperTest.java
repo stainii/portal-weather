@@ -92,7 +92,7 @@ class DateHelperTest {
                 .location("")
                 .build();
 
-        var results = dateHelper.toDates(List.of(forecast1, forecast2));
+        var results = dateHelper.forecastsToDates(List.of(forecast1, forecast2));
         assertThat(results).isEqualTo(List.of(date1, date2));
     }
 

@@ -6,6 +6,13 @@ A REST service providing weather functionality. At this moment, it has one endpo
 ## Supported external weather APIs
 * OpenWeatherMap
 
+
+## Docker environment variables
+| Name | Example value | Description | Required? |
+| ---- | ------------- | ----------- | -------- |
+| OPENWEATHERMAP_API_KEY | secret | API key for OpenWeatherMap | required when OpenWeatherMap is enabled
+
+
 ## Contract
 ### /forecasts
 
@@ -14,7 +21,7 @@ A REST service providing weather functionality. At this moment, it has one endpo
 * Body: 
 ```
 {
-    requests: [
+    forecastRequests: [
         {
                 location: text,
                 startDateTime: datetime,
@@ -29,6 +36,11 @@ A REST service providing weather functionality. At this moment, it has one endpo
 TODO
 
 ## Configuration
+Several aspects can be configured
+* External APIs
+* Cache
+* OpenWeatherMap specifics
+
 ### External APIs
 The usage of external weather APIs can be configured with Spring Boot properties:
 
@@ -74,6 +86,19 @@ Locations are always kept indefinitely, or until the max number of entries have 
 
 #### max-no-of-entries
 How many entries can the cache keep? Default is 1000.
+
+
+### OpenWeatherMap specifics
+If you don't disable the OpenWeatherMap forecast service, 
+it is required to provide an API key.
+
+```
+be.stijnhooft.portal.weather.service.OpenWeatherMap.api-key = your-api-key
+```
+
+When running in Docker, you can provide this as an environment variable "OPENWEATHERMAP_API_KEY".
+
+
 
 ## Internal working
 The app is built around these concepts:
@@ -170,3 +195,41 @@ public interface LocationService<L extends Location> {
 
 
 A LocationService is expected to manage its own rate limiting and return an empty Optional when too many calls are made.
+
+
+
+## Release
+### How to release
+To release a module, this project makes use of the JGitflow plugin and the Dockerfile-maven-plugin.
+
+1. Make sure all changes have been committed and pushed to Github.
+1. Switch to the dev branch.
+1. Make sure that the dev branch has at least all commits that were made to the master branch
+1. Make sure that your Maven has been set up correctly (see below)
+1. Run `mvn jgitflow:release-start -Pproduction`.
+1. Run `mvn jgitflow:release-finish -Pproduction`.
+1. In Github, mark the release as latest release.
+1. Congratulations, you have released both a Maven and a Docker build!
+
+More information about the JGitflow plugin can be found [here](https://gist.github.com/lemiorhan/97b4f827c08aed58a9d8).
+
+#### Maven configuration
+At the moment, releases are made on a local machine. No Jenkins job has been made (yet).
+Therefore, make sure you have the following config in your Maven `settings.xml`;
+
+````$xml
+<servers>
+		<server>
+			<id>docker.io</id>
+			<username>your_username</username>
+			<password>*************</password>
+		</server>
+		<server>
+			<id>portal-nexus-releases</id>
+			<username>your_username</username>
+            <password>*************</password>
+		</server>
+	</servers>
+````
+* docker.io points to the Docker Hub.
+* portal-nexus-releases points to my personal Nexus (see `<distributionManagement>` in the project's `pom.xml`)

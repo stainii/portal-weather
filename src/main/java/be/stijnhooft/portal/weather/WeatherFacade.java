@@ -69,7 +69,10 @@ public class WeatherFacade {
     @NotNull
     private Optional<? extends Location> findAndCacheLocation(String locationUserInput, ForecastService<?> forecastService) {
         Class<? extends Location> locationType = forecastService.supportedLocationType();
-        Optional<? extends Location> location = mapLocation(locationUserInput, locationType);
+        Optional<? extends Location> location = locationServices.stream()
+                .filter(locationService -> locationService.canProvide(locationType))
+                .flatMap(locationService -> locationService.map(locationUserInput, locationType).stream())
+                .findFirst();
         location.ifPresent(value -> cachedLocationService.addToCacheIfNotPresent(locationUserInput, locationType, value));
         return location;
     }
@@ -105,10 +108,4 @@ public class WeatherFacade {
                 .iterator();
     }
 
-    private Optional<Location> mapLocation(String locationUserInput, Class<? extends Location> locationType) {
-        return locationServices.stream()
-                .filter(locationService -> locationService.canProvide(locationType))
-                .flatMap(locationService -> locationService.map(locationUserInput, locationType).stream())
-                .findFirst();
-    }
 }

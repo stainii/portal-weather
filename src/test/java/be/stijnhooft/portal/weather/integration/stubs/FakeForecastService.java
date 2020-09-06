@@ -1,0 +1,95 @@
+package be.stijnhooft.portal.weather.integration.stubs;
+
+import be.stijnhooft.portal.weather.DateHelper;
+import be.stijnhooft.portal.weather.dtos.Interval;
+import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
+import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
+import be.stijnhooft.portal.weather.locations.types.Location;
+import lombok.Value;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class FakeForecastService implements ForecastService<FakeLocation> {
+
+    private final DateHelper dateHelper;
+
+    private final Class<? extends Location> supportedLocationType;
+    private final List<ForecastResultTable> ignoredForecasts;
+    private final String name;
+    private final int order;
+    private final List<ForecastQuery> queries;
+
+    public FakeForecastService(String name, Class<? extends Location> supportedLocationType, int order, DateHelper dateHelper) {
+        this.name = name;
+        this.supportedLocationType = supportedLocationType;
+        this.order = order;
+        this.ignoredForecasts = new ArrayList<>();
+        this.queries = new ArrayList<>();
+        this.dateHelper = dateHelper;
+    }
+
+    @Override
+    public Class supportedLocationType() {
+        return supportedLocationType;
+    }
+
+    @Override
+    public int order() {
+        return order;
+    }
+
+    @Override
+    public boolean enabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<Forecast> query(Location location, Collection<Interval> intervals) {
+        String locationUserInput = ((FakeLocation) location).getUserInput();
+
+        intervals.forEach(interval -> queries.add(new ForecastQuery(locationUserInput, interval.getStartDateTime(), interval.getEndDateTime())));
+
+        return dateHelper.intervalsToDates(intervals)
+                .stream()
+                .filter(date -> ignoredForecasts.stream().noneMatch(table -> table.getDate().isEqual(date) && table.getLocation().equals(locationUserInput)))
+                .map(date -> Forecast.builder()
+                        .location(locationUserInput)
+                        .date(date)
+                        .source(name)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    public void doNotProvideFor(ForecastResultTable forecastResultTable) {
+        this.ignoredForecasts.add(forecastResultTable);
+    }
+
+    public boolean hasNeverBeenQueried() {
+        return queries.isEmpty();
+    }
+
+    public boolean hasBeenQueriedFor(String location, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return queries.contains(new ForecastQuery(location, startDateTime, endDateTime));
+    }
+
+    public void resetQueries() {
+        queries.clear();
+    }
+
+    @Value
+    private static class ForecastQuery {
+        String location;
+        LocalDateTime startDateTime;
+        LocalDateTime endDateTime;
+    }
+}

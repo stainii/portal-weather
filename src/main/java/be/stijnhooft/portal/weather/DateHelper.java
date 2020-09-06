@@ -35,12 +35,12 @@ public class DateHelper {
         return result;
     }
 
-    public List<LocalDate> toDates(Collection<Forecast> forecastsFromServices) {
+    public List<LocalDate> forecastsToDates(Collection<Forecast> forecastsFromServices) {
         return forecastsFromServices.stream().map(Forecast::getDate).collect(Collectors.toList());
     }
 
     public Collection<LocalDate> determineMissingDays(Collection<Forecast> forecasts, Collection<LocalDate> expectedDays) {
-        List<LocalDate> foundDays = toDates(forecasts);
+        List<LocalDate> foundDays = forecastsToDates(forecasts);
 
         ArrayList<LocalDate> missingDays = new ArrayList<>(expectedDays);
         missingDays.removeAll(foundDays);
