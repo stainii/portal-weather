@@ -1,11 +1,11 @@
 package be.stijnhooft.portal.weather.forecasts.services.impl;
 
-import be.stijnhooft.portal.weather.DateHelper;
-import be.stijnhooft.portal.weather.cache.ForecastCacheKey;
+import be.stijnhooft.portal.weather.cache.CacheService;
 import be.stijnhooft.portal.weather.dtos.Interval;
+import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.locations.types.Location;
-import org.ehcache.Cache;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +17,34 @@ import java.util.stream.Collectors;
 import static java.time.temporal.ChronoUnit.HOURS;
 
 @Service
-public class FirstCachedForecastService extends LastCachedForecastService {
+@Slf4j
+public class FirstCachedForecastService implements ForecastService<Location> {
 
     @Value("${be.stijnhooft.portal.weather.cache.forecasts.hours-considered-up-to-date:1}")
     private int hoursConsideredUpToDate;
-    private final Clock clock;
 
-    public FirstCachedForecastService(Cache<ForecastCacheKey, Forecast> forecastsCache, DateHelper dateHelper, Clock clock) {
-        super(forecastsCache, dateHelper);
+    private final Clock clock;
+    private final CacheService cacheService;
+
+    public FirstCachedForecastService(Clock clock, CacheService cacheService) {
         this.clock = clock;
+        this.cacheService = cacheService;
     }
 
-    // TODO: test
+    @Override
+    public Class<Location> supportedLocationType() {
+        return Location.class;
+    }
+
     @Override
     public Collection<Forecast> query(Location location, Collection<Interval> intervals) {
-        return super.query(location, intervals)
+        var cachedForecasts = cacheService.find(location, intervals);
+        var upToDateCachedForecasts = cachedForecasts
                 .stream()
                 .filter(forecast -> forecast.getCreatedAt().isAfter(LocalDateTime.now(clock).minus(hoursConsideredUpToDate, HOURS)))
                 .collect(Collectors.toList());
+        log.info("Found {} cached forecasts of which {} are still considered up to date for {} at {}", cachedForecasts.size(), upToDateCachedForecasts.size(), location.getUserInput(), intervals);
+        return upToDateCachedForecasts;
     }
 
     @Override

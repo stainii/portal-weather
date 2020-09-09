@@ -5,9 +5,7 @@ import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -107,11 +105,21 @@ public class DateHelper {
                 .collect(Collectors.toSet());
     }
 
+    // TODO: test
     public LocalDate xDaysAgo(int x) {
         return LocalDate.now(clock).minus(x, DAYS);
     }
 
+    // TODO: test
     public LocalDate xDaysInTheFuture(int x) {
         return LocalDate.now(clock).plus(x, DAYS);
+    }
+
+    public LocalDateTime toLocalDateTime(Instant instant) {
+        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+    }
+
+    public LocalDate toLocalDate(Instant instant) {
+        return toLocalDateTime(instant).toLocalDate();
     }
 }

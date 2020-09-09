@@ -48,29 +48,39 @@ public class WeatherFacade {
         while (!remainingDays.isEmpty() && forecastServiceIterator.hasNext()) {
             ForecastService<?> forecastService = forecastServiceIterator.next();
 
-            Optional<? extends Location> location = findAndCacheLocation(locationUserInput, forecastService);
-            if (location.isEmpty()) {
+            Collection<? extends Location> locations = findAndCacheLocation(locationUserInput, forecastService);
+            if (locations.isEmpty()) {
                 continue;
             }
 
-            Collection<Forecast> foundForecasts = findAndCacheForecasts(forecastService, remainingDays, location.get());
-            forecasts.addAll(foundForecasts);
+            for (Location location : locations) {
+                if (!remainingDays.isEmpty()) {
+                    Collection<Forecast> foundForecasts = findAndCacheForecasts(forecastService, remainingDays, location);
+                    forecasts.addAll(foundForecasts);
 
-            remainingDays = dateHelper.determineMissingDays(forecasts, remainingDays);
+                    remainingDays = dateHelper.determineMissingDays(forecasts, remainingDays);
+                    log.info("At this moment we've found {} out of {} forecasts for {}. Still looking for {}", forecasts.size(), forecasts.size() + remainingDays.size(), locationUserInput, remainingDays);
+                }
+            }
+        }
+
+        if (!remainingDays.isEmpty()) {
+            log.info("Found no forecasts for {} at {}", locationUserInput, remainingDays);
         }
 
         return forecasts;
     }
 
     @NotNull
-    private Optional<? extends Location> findAndCacheLocation(String locationUserInput, ForecastService<?> forecastService) {
-        Class<? extends Location> locationType = forecastService.supportedLocationType();
-        Optional<? extends Location> location = locationServices.stream()
+    private Collection<? extends Location> findAndCacheLocation(String locationUserInput, ForecastService<?> forecastService) {
+        var locationType = forecastService.supportedLocationType();
+        var locations = locationServices.stream()
                 .filter(locationService -> locationService.canProvide(locationType))
-                .flatMap(locationService -> locationService.map(locationUserInput, locationType).stream())
-                .findFirst();
-        location.ifPresent(value -> cacheService.addToCacheIfNotPresent(locationUserInput, locationType, value));
-        return location;
+                .map(locationService -> locationService.map(locationUserInput, locationType))
+                .findFirst()
+                .orElse(new ArrayList<>());
+        cacheService.addToCacheIfNotPresent(locationUserInput, locations);
+        return locations;
     }
 
     @NotNull
@@ -86,7 +96,6 @@ public class WeatherFacade {
                 .filter(forecast -> remainingDays.contains(forecast.getDate()))
                 .collect(Collectors.toList());
     }
-
 
 
     public void registerForecastService(ForecastService<? extends Location> forecastService) {

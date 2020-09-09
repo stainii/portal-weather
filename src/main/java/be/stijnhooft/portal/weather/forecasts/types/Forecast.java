@@ -13,9 +13,20 @@ import java.time.LocalDateTime;
 @Builder
 @With
 public class Forecast implements Serializable {
+
     @NonNull private String location;
     @NonNull private LocalDate date;
     @NonNull private String source;
     @NonNull private LocalDateTime createdAt;
-    // TODO ...
+
+    /** temperature in celsius **/
+    private Temperature temperature;
+
+    /** cloudiness between 0 and 100 **/
+    private Integer cloudiness;
+
+    private Precipitation precipitation;
+
+    private Wind wind;
+
 }

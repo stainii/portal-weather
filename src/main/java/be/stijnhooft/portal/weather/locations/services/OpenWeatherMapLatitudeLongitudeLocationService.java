@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.locations.services;
 
 import be.stijnhooft.portal.weather.locations.types.Location;
-import be.stijnhooft.portal.weather.locations.types.impl.OpenWeatherMapCityId;
+import be.stijnhooft.portal.weather.locations.types.impl.LatitudeLongitude;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -18,61 +18,61 @@ import java.util.zip.GZIPInputStream;
 
 @Service
 @Slf4j
-public class OpenWeatherMapCityIdLocationService implements LocationService {
+public class OpenWeatherMapLatitudeLongitudeLocationService implements LocationService {
 
     public static final String CITY_LIST_GZ_FILE = "openweathermap/city.list.json.gz";
 
     @Override
     public boolean canProvide(Class<? extends Location> locationType) {
-        return locationType.isAssignableFrom(OpenWeatherMapCityId.class);
+        return locationType.isAssignableFrom(LatitudeLongitude.class);
     }
 
     @Override
     @SneakyThrows
     public Collection<Location> map(String location, Class<? extends Location> locationType) {
         InputStream unzippedCityListStream = unzip(CITY_LIST_GZ_FILE);
-        return streamToFind(unzippedCityListStream, "name", location, "id")
-                .map(cityId -> new OpenWeatherMapCityId(location, cityId))
+        return streamToFind(unzippedCityListStream, location)
                 .stream()
                 .collect(Collectors.toList());
     }
 
-    private Optional<String> streamToFind(InputStream inputStream, String tokenKeyToFind, String tokenValueToFind, String neighbourTokenKeyForWhichTheValueShouldBeReturned) throws IOException {
+    private Optional<Location> streamToFind(InputStream inputStream, String location) throws IOException {
         JsonFactory jsonFactory = new JsonFactory();
         try (JsonParser jsonParser = jsonFactory.createParser(inputStream)) {
 
-            String currentNeighbourTokenValue = null;
-            boolean tokenValueFound = false;
+            boolean locationFound = false;
+            String latitude = null;
+            String longitude = null;
+
             while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
 
                 // is it the end of the json object? Did we found anything? If not, reset.
                 if (jsonParser.getCurrentToken() == JsonToken.END_OBJECT) {
-                    if (tokenValueFound && currentNeighbourTokenValue != null) {
-                        log.info("Found a location for type {} and user input {}", OpenWeatherMapCityId.class, tokenValueToFind);
-                        return Optional.of(currentNeighbourTokenValue);
+                    if (locationFound && latitude != null && longitude != null) {
+                        log.info("Found a location for type {} and user input {}", LatitudeLongitude.class, location);
+                        return Optional.of(new LatitudeLongitude(location, latitude, longitude));
                     } else {
-                        currentNeighbourTokenValue = null;
+                        latitude = null;
+                        longitude = null;
                     }
                 }
 
                 // is this the token we're looking for?
                 String key = jsonParser.getCurrentName();
-                if (tokenKeyToFind.equals(key)) {
+                if ("name".equals(key)) {
                     String tokenValue = jsonParser.getValueAsString();
-                    if (tokenValueToFind.equals(tokenValue)) {
-                        tokenValueFound = true;
+                    if (location.equals(tokenValue)) {
+                        locationFound = true;
                     }
-                }
-
-                // or is this the neighbouring token which we should return the value of, if/when we find/have found
-                // the token in this same json object?
-                else if (neighbourTokenKeyForWhichTheValueShouldBeReturned.equals(key)) {
-                    currentNeighbourTokenValue = jsonParser.getValueAsString();
+                } else if ("lat".equals(key)) {
+                    latitude = jsonParser.getValueAsString();
+                } else if ("lon".equals(key)) {
+                    longitude = jsonParser.getValueAsString();
                 }
             }
         }
 
-        log.info("Found no location for type {} and user input {}", OpenWeatherMapCityId.class, tokenValueToFind);
+        log.info("Found no location for type {} and user input {}", LatitudeLongitude.class, location);
         return Optional.empty();
     }
 
@@ -83,6 +83,6 @@ public class OpenWeatherMapCityIdLocationService implements LocationService {
 
     @Override
     public String name() {
-        return "OpenWeatherMap CityId";
+        return "OpenWeatherMap Latitude Longitude";
     }
 }

@@ -21,11 +21,11 @@ class LocationCacheValuesTest {
     void addIfAbsentWhenAbsent() {
         assertThat(locationCacheValues).isEmpty();
 
-        LocationCacheValue locationCacheValue1 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId(""));
+        LocationCacheValue locationCacheValue1 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId("", ""));
         locationCacheValues.addIfAbsent(locationCacheValue1);
         assertThat(locationCacheValues).hasSize(1);
 
-        LocationCacheValue locationCacheValue2 = new LocationCacheValue(LatitudeLongitude.class, new LatitudeLongitude());
+        LocationCacheValue locationCacheValue2 = new LocationCacheValue(LatitudeLongitude.class, new LatitudeLongitude("", "", ""));
         locationCacheValues.addIfAbsent(locationCacheValue2);
         assertThat(locationCacheValues).hasSize(2);
     }
@@ -34,7 +34,7 @@ class LocationCacheValuesTest {
     void addIfAbsentWhenAlreadyThere() {
         assertThat(locationCacheValues).isEmpty();
 
-        LocationCacheValue locationCacheValue1 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId(""));
+        LocationCacheValue locationCacheValue1 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId("", ""));
         locationCacheValues.addIfAbsent(locationCacheValue1);
         assertThat(locationCacheValues).hasSize(1);
 
@@ -43,7 +43,7 @@ class LocationCacheValuesTest {
         assertThat(locationCacheValues).hasSize(1);
 
         // add an equal object
-        LocationCacheValue locationCacheValue2 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId(""));
+        LocationCacheValue locationCacheValue2 = new LocationCacheValue(OpenWeatherMapCityId.class, new OpenWeatherMapCityId("", ""));
         locationCacheValues.addIfAbsent(locationCacheValue2);
         assertThat(locationCacheValues).hasSize(1);
     }

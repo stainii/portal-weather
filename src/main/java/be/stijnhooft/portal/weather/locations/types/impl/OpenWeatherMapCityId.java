@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OpenWeatherMapCityId implements Location {
+    private String userInput;
     private String cityId;
 }

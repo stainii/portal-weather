@@ -19,7 +19,6 @@ public class Interval {
     }
 
     public Interval(LocalDate inclusiveStart, LocalDate inclusiveEnd) {
-        this.startDateTime = inclusiveStart.atStartOfDay();
-        this.endDateTime = inclusiveEnd.plus(1, DAYS).atStartOfDay();
+        this(inclusiveStart.atStartOfDay(), inclusiveEnd.plus(1, DAYS).atStartOfDay());
     }
 }

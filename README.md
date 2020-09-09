@@ -16,24 +16,46 @@ A REST service providing weather functionality. At this moment, it has one endpo
 ## Contract
 ### /forecasts
 
-#### Request
 * Method: POST 
-* Body: 
-```
+* Example body: 
+```json
 {
-    forecastRequests: [
-        {
-                location: text,
-                startDateTime: datetime,
-                endDateTime: datetime
-        }, ...
-    ]
+    "forecastRequests": [{
+        "location": "Zottegem",
+        "startDateTime": "2020-09-09T00:00:00",
+        "endDateTime": "2020-09-09T23:59:59"
+    }]
 }
 ```
 
-
-#### Response
-TODO
+* Example response:
+```json
+{
+    "forecasts": [
+        {
+            "location": "Zottegem",
+            "date": "2020-09-09",
+            "source": "be.stijnhooft.portal.weather.forecasts.services.impl.OpenWeatherMapForecastService (cached)",
+            "createdAt": "2020-09-09T17:46:34.615051",
+            "temperature": {
+                "minTemperature": 16.74,
+                "maxTemperature": 22.41,
+                "feelsLike": 21.2
+            },
+            "cloudiness": 99,
+            "precipitation": {
+                "intensity": 0,
+                "probability": 0.0,
+                "type": "NOTHING"
+            },
+            "wind": {
+                "beaufort": 3,
+                "direction": "WEST"
+            }
+        }
+    ]
+}
+```
 
 ## Configuration
 Since the plugin-like nature of this application, we have 2 types of configuration:
@@ -42,10 +64,12 @@ Since the plugin-like nature of this application, we have 2 types of configurati
 
 ### General framework
 ```
-be.stijnhooft.portal.weather.cache.path=/Users/stijnhooft/app/portal/weather/
-be.stijnhooft.portal.weather.cache.forecasts.hours-considered-up-to-date=1
-be.stijnhooft.portal.weather.cache.forecasts.max-no-of-entries=1000
-be.stijnhooft.portal.weather.cache.locations.max-no-of-entries=1000
+be.stijnhooft.portal.weather.cache.path = /Users/stijnhooft/app/portal/weather/
+be.stijnhooft.portal.weather.cache.forecasts.hours-considered-up-to-date = 1
+be.stijnhooft.portal.weather.cache.forecasts.max-mb = 100
+be.stijnhooft.portal.weather.cache.forecasts.max-no-of-entries = 1000
+be.stijnhooft.portal.weather.cache.locations.max-mb = 100
+be.stijnhooft.portal.weather.cache.locations.max-no-of-entries = 1000
 ```
 
 #### Path
@@ -53,10 +77,13 @@ When provided, the cache will be saved in that directory.
 
 When not provided, the cache is kept in-memory only.
 
-#### hours-considered-up-to-date
+#### Hours-considered-up-to-date
 How many hours is a retrieved forecast seen as up to date? Default is 1.
 
-#### max-no-of-entries
+#### Max-mb
+How many megabytes may the cache take on the disk?
+
+#### Max-no-of-entries
 How many entries can the cache keep? Default is 1000.
 
 
@@ -117,38 +144,16 @@ It is responsible for the communication with the specific API and translation of
 
 A ForecastService does not have to worry about the format of the location. It specifies the format it needs its location to be in, and the WeatherFacade will pass through the location in that correct format.
 
-```java
-public interface ForecastService<L extends Location> {
-
-    Class<L> supportedLocationType();
-    Collection<Forecast> query(Location location, Collection<Interval> intervals);
-    ...
-
-}
-``` 
-
-
 A ForecastService is expected to manage its own rate limiting and return an empty list when too many calls are made.
 
 
 ### LocationService
 A LocationService translated the user's location description (plain text) into a specific format.
 
-It could look in a downloaded list what an external API's internal location id is.
-Or it could call a geocode API to get a latitude and longitude.
+Location services can retrieve their data in various ways. It could look in a downloaded list what an external API's internal location id is.
+Or it could call a geocode API to get a latitude and longitude. Or it could...
 
-```java
-public interface LocationService<L extends Location> {
-
-    boolean canProvide(Class<? extends Location> locationType);
-    Optional<Location> map(String location, Class<? extends Location> locationType);
-    ...
-
-}
-```
-
-
-A LocationService is expected to manage its own rate limiting and return an empty Optional when too many calls are made.
+A LocationService is expected to manage its own rate limiting and return an empty list when too many calls are made.
 
 
 

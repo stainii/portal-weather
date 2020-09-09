@@ -4,8 +4,8 @@ import be.stijnhooft.portal.weather.locations.services.LocationService;
 import be.stijnhooft.portal.weather.locations.types.Location;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public class FakeLocationService implements LocationService {
 
@@ -27,12 +27,12 @@ public class FakeLocationService implements LocationService {
     }
 
     @Override
-    public Optional<Location> map(String locationUserInput, Class<? extends Location> locationType) {
+    public Collection<Location> map(String locationUserInput, Class<? extends Location> locationType) {
         queriedLocations.add(locationUserInput);
         if (ignoredLocations.contains(locationUserInput)) {
-            return Optional.empty();
+            return new ArrayList<>();
         } else {
-            return Optional.of(new FakeLocation(locationUserInput));
+            return List.of(new FakeLocation(locationUserInput));
         }
     }
 
