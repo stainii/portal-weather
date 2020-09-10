@@ -1,14 +1,15 @@
 package be.stijnhooft.portal.weather.forecasts.services.impl;
 
-import be.stijnhooft.portal.weather.DateHelper;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapResponse;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import be.stijnhooft.portal.weather.locations.types.impl.LatitudeLongitude;
 import be.stijnhooft.portal.weather.mappers.openweathermap.OpenWeatherMapMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class OpenWeatherMapForecastService implements ForecastService<LatitudeLo
     // TODO: test
     @PostConstruct
     public void init() {
-        if (enabled && apiKey == null) {
+        if (enabled && StringUtils.isEmpty(apiKey)) {
             throw new IllegalStateException("Please provide an API key for OpenWeatherMap");
         }
     }

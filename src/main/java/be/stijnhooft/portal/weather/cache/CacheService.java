@@ -1,8 +1,8 @@
 package be.stijnhooft.portal.weather.cache;
 
-import be.stijnhooft.portal.weather.DateHelper;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;

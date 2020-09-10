@@ -1,9 +1,9 @@
 package be.stijnhooft.portal.weather.integration.stubs;
 
-import be.stijnhooft.portal.weather.DateHelper;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import lombok.Value;

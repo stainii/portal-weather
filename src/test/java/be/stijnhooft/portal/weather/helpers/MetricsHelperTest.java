@@ -1,4 +1,4 @@
-package be.stijnhooft.portal.weather;
+package be.stijnhooft.portal.weather.helpers;
 
 import be.stijnhooft.portal.weather.forecasts.types.WindDirection;
 import org.junit.jupiter.api.BeforeEach;

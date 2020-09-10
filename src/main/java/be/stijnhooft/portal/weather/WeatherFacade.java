@@ -4,6 +4,7 @@ import be.stijnhooft.portal.weather.cache.CacheService;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.locations.services.LocationService;
 import be.stijnhooft.portal.weather.locations.types.Location;
 import lombok.Setter;

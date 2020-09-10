@@ -1,6 +1,5 @@
 package be.stijnhooft.portal.weather.integration.stepdefinitions;
 
-import be.stijnhooft.portal.weather.DateHelper;
 import be.stijnhooft.portal.weather.PortalWeatherApplication;
 import be.stijnhooft.portal.weather.WeatherFacade;
 import be.stijnhooft.portal.weather.cache.CacheService;
@@ -8,6 +7,7 @@ import be.stijnhooft.portal.weather.dtos.ForecastRequest;
 import be.stijnhooft.portal.weather.forecasts.services.impl.FirstCachedForecastService;
 import be.stijnhooft.portal.weather.forecasts.services.impl.LastCachedForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.integration.IntegrationTestConfiguration;
 import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
 import be.stijnhooft.portal.weather.integration.stubs.AdaptableClock;

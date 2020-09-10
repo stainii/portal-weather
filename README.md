@@ -10,6 +10,15 @@ A REST service providing weather functionality. At this moment, it has one endpo
 ## Docker environment variables
 | Name | Example value | Description | Required? |
 | ---- | ------------- | ----------- | -------- |
+| JAVA_OPTS_WEATHER | -Xmx400m -Xms400m | Java opts you want to pass to the JVM | optional
+| CACHE_PATH | /opt/cache/ | Path of the cache in the Docker container. Map this to your volume. | optional
+| CACHE_FORECASTS_HOURS_CONSIDERED_UP_TO_DATE | 1 | [See property documentation](#Hours-considered-up-to-date) | optional
+| CACHE_FORECASTS_MAX_MB | 100 | [See property documentation](#Max-mb) | optional
+| CACHE_FORECASTS_MAX_NO_OF_ENTRIES | 1000 | [See property documentation](#Max-no-of-entries) | optional
+| CACHE_LOCATIONS_MAX_MB | 100 | [See property documentation](#Max-mb) | optional
+| CACHE_LOCATIONS_MAX_NO_OF_ENTRIES | 1000 | [See property documentation](#Max-no-of-entries) | optional
+| OPENWEATHERMAP_ENABLED | true | Should OpenWeatherMap be used? Default: true | optional
+| OPENWEATHERMAP_ORDER | 1 | Order of usage of OpenWeatherMap in comparison with other services. See [property documentation](#order). Default: 1 | optional
 | OPENWEATHERMAP_API_KEY | secret | API key for OpenWeatherMap | required when OpenWeatherMap is enabled
 
 

@@ -15,7 +15,7 @@
     <description>Provides weather services, like forecasts</description>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>11</java.version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <serenity.version>2.3.1</serenity.version>
         <serenity-jbehave.version>1.46.0</serenity-jbehave.version>
@@ -119,6 +119,28 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layers>
+                        <!-- create a multilayered jar that can be used to build layered docker images -->
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m5.1</version>
+                <configuration>
+                    <flowInitContext>
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>dev</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                    </flowInitContext>
+                    <squash>false</squash>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -129,7 +151,8 @@
                         <include>**/*Stories.java</include>
                     </includes>
                     <classpathDependencyExcludes>
-                        <classpathDependencyExcludes>${project.groupId}:${project.artifactId}</classpathDependencyExcludes>
+                        <classpathDependencyExcludes>${project.groupId}:${project.artifactId}
+                        </classpathDependencyExcludes>
                     </classpathDependencyExcludes>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${project.build.outputDirectory}</additionalClasspathElement>
@@ -160,5 +183,59 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.4.13</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>stainii/${project.artifactId}</repository>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <tag>${project.version}</tag>
+                            <buildArgs>
+                                <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                            <noCache>true</noCache>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>javax.activation</groupId>
+                                <artifactId>activation</artifactId>
+                                <version>1.1.1</version>
+                            </dependency>
+                        </dependencies>
+
+
+                        <!-- put the credentials of your Docker registry in your Maven settings.xml (in the .m2 folder).
+                        For example:
+
+                        <servers>
+                          <server>
+                            <id>docker.io</id>
+                            <username>your username of hub.docker.com</username>
+                            <password>your password of hub.docker.com</password>
+                          </server>
+                        </servers>
+
+                        -->
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

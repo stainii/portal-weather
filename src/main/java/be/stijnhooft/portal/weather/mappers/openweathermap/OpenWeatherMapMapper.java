@@ -1,7 +1,5 @@
 package be.stijnhooft.portal.weather.mappers.openweathermap;
 
-import be.stijnhooft.portal.weather.DateHelper;
-import be.stijnhooft.portal.weather.MetricsHelper;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapForecast;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapResponse;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapWeather;
@@ -11,6 +9,8 @@ import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.forecasts.types.Precipitation;
 import be.stijnhooft.portal.weather.forecasts.types.Temperature;
 import be.stijnhooft.portal.weather.forecasts.types.Wind;
+import be.stijnhooft.portal.weather.helpers.DateHelper;
+import be.stijnhooft.portal.weather.helpers.MetricsHelper;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
