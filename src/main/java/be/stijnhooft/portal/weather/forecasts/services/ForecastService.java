@@ -2,13 +2,12 @@ package be.stijnhooft.portal.weather.forecasts.services;
 
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
-import be.stijnhooft.portal.weather.locations.types.Location;
+import be.stijnhooft.portal.weather.locations.Location;
 
 import java.util.Collection;
 
-public interface ForecastService<L extends Location> {
+public interface ForecastService {
 
-    Class<L> supportedLocationType();
     Collection<Forecast> query(Location location, Collection<Interval> intervals);
 
     /**

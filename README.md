@@ -17,9 +17,9 @@ A REST service providing weather functionality. At this moment, it has one endpo
 | CACHE_FORECASTS_MAX_NO_OF_ENTRIES | 1000 | [See property documentation](#Max-no-of-entries) | optional
 | CACHE_LOCATIONS_MAX_MB | 100 | [See property documentation](#Max-mb) | optional
 | CACHE_LOCATIONS_MAX_NO_OF_ENTRIES | 1000 | [See property documentation](#Max-no-of-entries) | optional
-| OPENWEATHERMAP_ENABLED | true | Should OpenWeatherMap be used? Default: true | optional
-| OPENWEATHERMAP_ORDER | 1 | Order of usage of OpenWeatherMap in comparison with other services. See [property documentation](#order). Default: 1 | optional
-| OPENWEATHERMAP_API_KEY | secret | API key for OpenWeatherMap | required when OpenWeatherMap is enabled
+| OPEN_WEATHER_MAP_ENABLED | true | Should OpenWeatherMap be used? Default: true | optional
+| OPEN_WEATHER_MAP_ORDER | 1 | Order of usage of OpenWeatherMap in comparison with other services. See [property documentation](#order). Default: 1 | optional
+| OPEN_WEATHER_MAP_API_KEY | secret | API key for OpenWeatherMap | required when OpenWeatherMap is enabled
 
 
 ## Contract
@@ -116,7 +116,7 @@ When multiple services have the same order number, the order of these specific s
 If you don't disable the OpenWeatherMap forecast service, 
 it is required to provide an API key.
 
-When running in Docker, you can provide this as an environment variable "OPENWEATHERMAP_API_KEY".
+When running in Docker, you can provide this as an environment variable "OPEN_WEATHER_MAP_API_KEY".
 
 
 ## Internal working
@@ -133,7 +133,7 @@ The app is built around these concepts:
 The forecast of **one specific day** in **one specific location**.
 
 ### Location
-A representation of the location. Can be a class with one property called id, could be a class with latitude and longitude properties, ...
+Latitude and longitude of a location.
 
 ### WeatherFacade
 Queries its services, one by one, until all required information has been found.
@@ -151,19 +151,12 @@ The application always caches its results. The cache has 2 purposes:
 A ForecastService queries a specific external weather API. For example, you could have an OpenWeatherMapService, a ClimaCellService, ...
 It is responsible for the communication with the specific API and translation of our generic request/response to the API specific request/response.
 
-A ForecastService does not have to worry about the format of the location. It specifies the format it needs its location to be in, and the WeatherFacade will pass through the location in that correct format.
-
-A ForecastService is expected to manage its own rate limiting and return an empty list when too many calls are made.
+A ForecastService is expected to manage its own rate limiting, exception handling, ...
 
 
 ### LocationService
-A LocationService translated the user's location description (plain text) into a specific format.
-
-Location services can retrieve their data in various ways. It could look in a downloaded list what an external API's internal location id is.
-Or it could call a geocode API to get a latitude and longitude. Or it could...
-
-A LocationService is expected to manage its own rate limiting and return an empty list when too many calls are made.
-
+A LocationService translated the user's location description (plain text) into coordinates.
+How these coordinates are retrieved, is abstracted away behind the portal-location project. 
 
 
 ## Release
@@ -187,17 +180,17 @@ Therefore, make sure you have the following config in your Maven `settings.xml`;
 
 ````$xml
 <servers>
-		<server>
-			<id>docker.io</id>
-			<username>your_username</username>
-			<password>*************</password>
-		</server>
-		<server>
-			<id>portal-nexus-releases</id>
-			<username>your_username</username>
-            <password>*************</password>
-		</server>
-	</servers>
+    <server>
+        <id>docker.io</id>
+        <username>your_username</username>
+        <password>*************</password>
+    </server>
+    <server>
+        <id>portal-nexus-releases</id>
+        <username>your_username</username>
+        <password>*************</password>
+    </server>
+</servers>
 ````
 * docker.io points to the Docker Hub.
 * portal-nexus-releases points to my personal Nexus (see `<distributionManagement>` in the project's `pom.xml`)

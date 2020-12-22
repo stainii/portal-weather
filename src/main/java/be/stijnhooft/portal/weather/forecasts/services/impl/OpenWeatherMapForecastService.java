@@ -5,8 +5,7 @@ import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapResponse;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
-import be.stijnhooft.portal.weather.locations.types.Location;
-import be.stijnhooft.portal.weather.locations.types.impl.LatitudeLongitude;
+import be.stijnhooft.portal.weather.locations.Location;
 import be.stijnhooft.portal.weather.mappers.openweathermap.OpenWeatherMapMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -20,32 +19,34 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// TODO: test
 @Service
 @Slf4j
-public class OpenWeatherMapForecastService implements ForecastService<LatitudeLongitude> {
+public class OpenWeatherMapForecastService implements ForecastService {
 
-    @Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.enabled:true}")
-    private boolean enabled;
-
-    @Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.order:1}")
-    private int order;
-
-    @Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.api-key:#{null}}")
-    private String apiKey;
-
+    private final boolean enabled;
+    private final int order;
+    private final String apiKey;
     private final DateHelper dateHelper;
     private final RestTemplate restTemplate;
     private final OpenWeatherMapMapper openWeatherMapMapper;
 
     public final static String ONE_CALL_API = "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&exclude=current,minutely,hourly&appid=%s&units=metric";
 
-    public OpenWeatherMapForecastService(DateHelper dateHelper, RestTemplate restTemplate, OpenWeatherMapMapper openWeatherMapMapper) {
+    public OpenWeatherMapForecastService(@Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.enabled:true}") boolean enabled,
+                                         @Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.order:1}") int order,
+                                         @Value("${be.stijnhooft.portal.weather.service.OpenWeatherMap.api-key:#{null}}") String apiKey,
+                                         DateHelper dateHelper,
+                                         RestTemplate restTemplate,
+                                         OpenWeatherMapMapper openWeatherMapMapper) {
+        this.enabled = enabled;
+        this.order = order;
+        this.apiKey = apiKey;
         this.dateHelper = dateHelper;
         this.restTemplate = restTemplate;
         this.openWeatherMapMapper = openWeatherMapMapper;
     }
 
-    // TODO: test
     @PostConstruct
     public void init() {
         if (enabled && StringUtils.isEmpty(apiKey)) {
@@ -53,18 +54,7 @@ public class OpenWeatherMapForecastService implements ForecastService<LatitudeLo
         }
     }
 
-    @Override
-    public Class<LatitudeLongitude> supportedLocationType() {
-        return LatitudeLongitude.class;
-    }
-
-    // TODO: test
-    @Override
     public Collection<Forecast> query(Location location, Collection<Interval> intervals) {
-        return query((LatitudeLongitude) location, intervals);
-    }
-
-    public Collection<Forecast> query(LatitudeLongitude location, Collection<Interval> intervals) {
         // OpenWeatherMap doesn't provide date search functions for its free tiers. It always returns the upcoming
         // 5 days, so I always return what the API gives back. When no interval lies within the next 5 days,
         // I don't even bother calling the API.
@@ -87,7 +77,6 @@ public class OpenWeatherMapForecastService implements ForecastService<LatitudeLo
 
         log.info("Found {} forecasts by OpenWeatherMapForecastService", forecasts.size());
         return forecasts;
-        // TODO: create Dockerfile with OPENWEATHERMAP_API_KEY
     }
 
     @Override

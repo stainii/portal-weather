@@ -2,6 +2,7 @@ package be.stijnhooft.portal.weather;
 
 import be.stijnhooft.portal.weather.dtos.ForecastRequests;
 import be.stijnhooft.portal.weather.dtos.ForecastResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.stream.Collectors;
 
 // TODO: test
+@Slf4j
 @RestController
 public class WeatherController {
 
@@ -20,6 +22,7 @@ public class WeatherController {
 
     @PostMapping("/forecasts")
     public ForecastResponse retrieveForecasts(@RequestBody ForecastRequests forecastRequests) {
+        log.info("Received forecast requests: {}.", forecastRequests);
         var forecasts = forecastRequests
                 .getForecastRequests()
                 .stream()

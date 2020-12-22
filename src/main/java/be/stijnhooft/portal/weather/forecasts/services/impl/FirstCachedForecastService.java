@@ -4,7 +4,7 @@ import be.stijnhooft.portal.weather.cache.CacheService;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
-import be.stijnhooft.portal.weather.locations.types.Location;
+import be.stijnhooft.portal.weather.locations.Location;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import static java.time.temporal.ChronoUnit.HOURS;
 
 @Service
 @Slf4j
-public class FirstCachedForecastService implements ForecastService<Location> {
+public class FirstCachedForecastService implements ForecastService {
 
     @Value("${be.stijnhooft.portal.weather.cache.forecasts.hours-considered-up-to-date:1}")
     private int hoursConsideredUpToDate;
@@ -32,13 +32,8 @@ public class FirstCachedForecastService implements ForecastService<Location> {
     }
 
     @Override
-    public Class<Location> supportedLocationType() {
-        return Location.class;
-    }
-
-    @Override
     public Collection<Forecast> query(Location location, Collection<Interval> intervals) {
-        var cachedForecasts = cacheService.find(location, intervals);
+        var cachedForecasts = cacheService.findForecasts(location, intervals);
         var upToDateCachedForecasts = cachedForecasts
                 .stream()
                 .filter(forecast -> forecast.getCreatedAt().isAfter(LocalDateTime.now(clock).minus(hoursConsideredUpToDate, HOURS)))

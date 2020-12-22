@@ -5,7 +5,7 @@ import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.integration.parameters.ForecastResultTable;
-import be.stijnhooft.portal.weather.locations.types.Location;
+import be.stijnhooft.portal.weather.locations.Location;
 import lombok.Value;
 
 import java.time.Clock;
@@ -15,30 +15,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FakeForecastService implements ForecastService<FakeLocation> {
+public class FakeForecastService implements ForecastService {
 
     private final DateHelper dateHelper;
     private final Clock clock;
 
-    private final Class<? extends Location> supportedLocationType;
     private final List<ForecastResultTable> ignoredForecasts;
     private final String name;
     private final int order;
     private final List<ForecastQuery> queries;
 
-    public FakeForecastService(String name, Class<? extends Location> supportedLocationType, int order, DateHelper dateHelper, Clock clock) {
+    public FakeForecastService(String name, int order, DateHelper dateHelper, Clock clock) {
         this.name = name;
-        this.supportedLocationType = supportedLocationType;
         this.order = order;
         this.clock = clock;
         this.ignoredForecasts = new ArrayList<>();
         this.queries = new ArrayList<>();
         this.dateHelper = dateHelper;
-    }
-
-    @Override
-    public Class supportedLocationType() {
-        return supportedLocationType;
     }
 
     @Override
@@ -53,7 +46,7 @@ public class FakeForecastService implements ForecastService<FakeLocation> {
 
     @Override
     public Collection<Forecast> query(Location location, Collection<Interval> intervals) {
-        String locationUserInput = ((FakeLocation) location).getUserInput();
+        String locationUserInput = location.getUserInput();
 
         intervals.forEach(interval -> queries.add(new ForecastQuery(locationUserInput, interval.getStartDateTime(), interval.getEndDateTime())));
 

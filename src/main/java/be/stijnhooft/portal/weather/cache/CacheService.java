@@ -3,7 +3,7 @@ package be.stijnhooft.portal.weather.cache;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
-import be.stijnhooft.portal.weather.locations.types.Location;
+import be.stijnhooft.portal.weather.locations.Location;
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,11 +20,11 @@ public class CacheService {
     public static final String SOURCE_SUFFIX = " (cached)";
 
     private final Cache<ForecastCacheKey, Forecast> forecastsCache;
-    private final Cache<String, LocationCacheValues> locationsCache;
+    private final Cache<String, Location> locationsCache;
     private final DateHelper dateHelper;
 
     public CacheService(@Qualifier("forecastsCache") Cache<ForecastCacheKey, Forecast> forecastsCache,
-                        @Qualifier("locationsCache") Cache<String, LocationCacheValues> locationsCache,
+                        @Qualifier("locationsCache") Cache<String, Location> locationsCache,
                         DateHelper dateHelper) {
         this.forecastsCache = forecastsCache;
         this.locationsCache = locationsCache;
@@ -45,25 +46,15 @@ public class CacheService {
         forecastsCache.putIfAbsent(forecastCacheKey, adaptedForecast);
     }
 
-    public void addToCacheIfNotPresent(String locationUserInput, Collection<Location> locations) {
-        locations.forEach(location -> addToCacheIfNotPresent(locationUserInput, location.getClass(), location));
+    public void addToCacheIfNotPresent(String locationUserInput, Location location) {
+        locationsCache.putIfAbsent(locationUserInput, location);
     }
 
-    public void addToCacheIfNotPresent(String locationUserInput, Class<? extends Location> locationType, Location location) {
-        LocationCacheValue locationCacheValue = new LocationCacheValue(locationType, location);
-
-        LocationCacheValues locationCacheValues;
-        if (locationsCache.containsKey(locationUserInput)) {
-            locationCacheValues = locationsCache.get(locationUserInput);
-        } else {
-            locationCacheValues = new LocationCacheValues();
-        }
-        locationCacheValues.addIfAbsent(locationCacheValue);
-
-        locationsCache.put(locationUserInput, locationCacheValues);
+    public Optional<Location> findLocation(String locationUserInput) {
+        return Optional.ofNullable(locationsCache.get(locationUserInput));
     }
 
-    public Collection<Forecast> find(Location location, Collection<Interval> intervals) {
+    public Collection<Forecast> findForecasts(Location location, Collection<Interval> intervals) {
         Collection<LocalDate> dates = dateHelper.intervalsToDates(intervals);
 
         return dates.stream()

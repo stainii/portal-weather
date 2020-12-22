@@ -2,10 +2,11 @@ package be.stijnhooft.portal.weather.helpers;
 
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.integration.stubs.AdaptableClock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,10 +17,12 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class DateHelperTest {
 
     private DateHelper dateHelper;
+    private AdaptableClock clock;
 
     @BeforeEach
     void setUp() {
-        dateHelper = new DateHelper(Clock.systemDefaultZone());
+        clock = new AdaptableClock(Instant.parse("2020-12-22T00:00:00Z"));
+        dateHelper = new DateHelper(clock);
     }
 
     @Test
@@ -186,4 +189,15 @@ class DateHelperTest {
         );
     }
 
+    @Test
+    void xDaysAgo() {
+        var fiveDaysAgo = dateHelper.xDaysAgo(5);
+        assertThat(fiveDaysAgo.toString()).isEqualTo("2020-12-17");
+    }
+
+    @Test
+    void xDaysInTheFuture() {
+        var fourDaysInTheFuture = dateHelper.xDaysInTheFuture(4);
+        assertThat(fourDaysInTheFuture.toString()).isEqualTo("2020-12-26");
+    }
 }

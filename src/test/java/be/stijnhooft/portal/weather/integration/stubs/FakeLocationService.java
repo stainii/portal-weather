@@ -1,59 +1,52 @@
 package be.stijnhooft.portal.weather.integration.stubs;
 
-import be.stijnhooft.portal.weather.locations.services.LocationService;
-import be.stijnhooft.portal.weather.locations.types.Location;
+import be.stijnhooft.portal.weather.locations.Location;
+import be.stijnhooft.portal.weather.locations.LocationService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-public class FakeLocationService implements LocationService {
+public class FakeLocationService extends LocationService {
 
-    private final Class<? extends Location> canProvide;
-    private final List<String> ignoredLocations;
-    private final String name;
-    private final List<String> queriedLocations;
+    private final List<String> queries;
+    private final List<String> ignoredQueries;
 
-    public FakeLocationService(String name, Class<Location> canProvide) {
-        this.name = name;
-        this.canProvide = canProvide;
-        this.ignoredLocations = new ArrayList<>();
-        this.queriedLocations = new ArrayList<>();
+    public FakeLocationService() {
+        super(null, null);
+        this.queries = new ArrayList<>();
+        this.ignoredQueries = new ArrayList<>();
     }
 
     @Override
-    public boolean canProvide(Class<? extends Location> locationType) {
-        return locationType.isAssignableFrom(canProvide);
-    }
+    public Optional<Location> map(String locationUserInput) {
+        this.queries.add(locationUserInput);
 
-    @Override
-    public Collection<Location> map(String locationUserInput, Class<? extends Location> locationType) {
-        queriedLocations.add(locationUserInput);
-        if (ignoredLocations.contains(locationUserInput)) {
-            return new ArrayList<>();
-        } else {
-            return List.of(new FakeLocation(locationUserInput));
+        if (ignoredQueries.contains(locationUserInput)) {
+            return Optional.empty();
         }
-    }
 
-    @Override
-    public String name() {
-        return name;
-    }
-
-    public void doNotProvideFor(String location) {
-        this.ignoredLocations.add(location);
+        return Optional.of(Location.builder()
+                .userInput(locationUserInput)
+                .latitude("1")
+                .longitude("2")
+                .build());
     }
 
     public boolean hasNeverBeenQueried() {
-        return queriedLocations.isEmpty();
+        return queries.isEmpty();
     }
 
     public boolean hasBeenQueriedFor(String location) {
-        return queriedLocations.contains(location);
+        return queries.contains(location);
     }
 
     public void resetQueries() {
-        queriedLocations.clear();
+        queries.clear();
+        ignoredQueries.clear();
+    }
+
+    public void doNotMap(String location) {
+        this.ignoredQueries.add(location);
     }
 }

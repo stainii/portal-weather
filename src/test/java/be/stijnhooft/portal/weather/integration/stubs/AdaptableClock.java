@@ -52,5 +52,6 @@ public class AdaptableClock extends Clock {
     public void tickForward(int timeAmount, ChronoUnit timeUnit) {
         changeClock(wrappedClock.get().instant().plus(timeAmount, timeUnit));
     }
+
 }
 

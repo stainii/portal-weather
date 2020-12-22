@@ -105,12 +105,10 @@ public class DateHelper {
                 .collect(Collectors.toSet());
     }
 
-    // TODO: test
     public LocalDate xDaysAgo(int x) {
         return LocalDate.now(clock).minus(x, DAYS);
     }
 
-    // TODO: test
     public LocalDate xDaysInTheFuture(int x) {
         return LocalDate.now(clock).plus(x, DAYS);
     }

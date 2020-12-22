@@ -1,6 +1,7 @@
 package be.stijnhooft.portal.weather.cache;
 
 import be.stijnhooft.portal.weather.forecasts.types.Forecast;
+import be.stijnhooft.portal.weather.locations.Location;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -33,8 +34,8 @@ public class CacheConfiguration {
     private int locationsCacheMaxNumberOfEntries;
 
     @Bean(name = "locationsCache")
-    public Cache<String, LocationCacheValues> locationsCache() {
-        return buildPersistenceStorageCache("locations", String.class, LocationCacheValues.class, locationsCacheMaxNumberOfEntries, locationsCacheMaxMb);
+    public Cache<String, Location> locationsCache() {
+        return buildPersistenceStorageCache("locations", String.class, Location.class, locationsCacheMaxNumberOfEntries, locationsCacheMaxMb);
     }
 
     @Bean(name = "forecastsCache")
