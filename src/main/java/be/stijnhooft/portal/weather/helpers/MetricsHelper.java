@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.helpers;
 
-import be.stijnhooft.portal.weather.forecasts.types.WindDirection;
+import be.stijnhooft.portal.model.weather.WindDirection;
 import org.springframework.stereotype.Component;
 
 @Component

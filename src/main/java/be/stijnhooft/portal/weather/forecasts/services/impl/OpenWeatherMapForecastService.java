@@ -1,9 +1,9 @@
 package be.stijnhooft.portal.weather.forecasts.services.impl;
 
+import be.stijnhooft.portal.model.weather.Forecast;
 import be.stijnhooft.portal.weather.dtos.Interval;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapResponse;
 import be.stijnhooft.portal.weather.forecasts.services.ForecastService;
-import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.locations.Location;
 import be.stijnhooft.portal.weather.mappers.openweathermap.OpenWeatherMapMapper;
@@ -19,7 +19,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// TODO: test
 @Service
 @Slf4j
 public class OpenWeatherMapForecastService implements ForecastService {

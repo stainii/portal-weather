@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.dtos.openweathermap;
 
-import be.stijnhooft.portal.weather.forecasts.types.PrecipitationType;
+import be.stijnhooft.portal.model.weather.PrecipitationType;
 import lombok.Getter;
 
 import java.util.Arrays;

@@ -1,14 +1,14 @@
 package be.stijnhooft.portal.weather.mappers.openweathermap;
 
+import be.stijnhooft.portal.model.weather.Forecast;
+import be.stijnhooft.portal.model.weather.Precipitation;
+import be.stijnhooft.portal.model.weather.Temperature;
+import be.stijnhooft.portal.model.weather.Wind;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapForecast;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapResponse;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapWeather;
 import be.stijnhooft.portal.weather.dtos.openweathermap.OpenWeatherMapWeatherCondition;
 import be.stijnhooft.portal.weather.forecasts.services.impl.OpenWeatherMapForecastService;
-import be.stijnhooft.portal.weather.forecasts.types.Forecast;
-import be.stijnhooft.portal.weather.forecasts.types.Precipitation;
-import be.stijnhooft.portal.weather.forecasts.types.Temperature;
-import be.stijnhooft.portal.weather.forecasts.types.Wind;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.helpers.MetricsHelper;
 import lombok.NonNull;
@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// TODO: test
 @Component
 public class OpenWeatherMapMapper {
 
@@ -43,7 +42,7 @@ public class OpenWeatherMapMapper {
     private Forecast map(String locationUserInput, OpenWeatherMapForecast openWeatherMapForecast) {
         return Forecast.builder()
                 .createdAt(LocalDateTime.now(clock))
-                .source(OpenWeatherMapForecastService.class.getName())
+                .source(OpenWeatherMapForecastService.class.getSimpleName())
                 .location(locationUserInput)
                 .date(dateHelper.toLocalDate(openWeatherMapForecast.getDt()))
                 .temperature(mapTemperature(openWeatherMapForecast))

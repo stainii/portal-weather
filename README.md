@@ -6,6 +6,8 @@ A REST service providing weather functionality. At this moment, it has one endpo
 ## Supported external weather APIs
 * OpenWeatherMap
 
+## Dependencies
+This service is dependent on a deployment of **portal-location**.
 
 ## Docker environment variables
 | Name | Example value | Description | Required? |

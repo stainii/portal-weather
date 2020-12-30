@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.cache;
 
+import be.stijnhooft.portal.model.weather.Forecast;
 import be.stijnhooft.portal.weather.dtos.Interval;
-import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.helpers.DateHelper;
 import be.stijnhooft.portal.weather.locations.Location;
 import org.ehcache.Cache;

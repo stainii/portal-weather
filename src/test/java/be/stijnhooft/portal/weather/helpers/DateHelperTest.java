@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.helpers;
 
+import be.stijnhooft.portal.model.weather.Forecast;
 import be.stijnhooft.portal.weather.dtos.Interval;
-import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import be.stijnhooft.portal.weather.integration.stubs.AdaptableClock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

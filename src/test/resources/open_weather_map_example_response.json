@@ -1,0 +1,304 @@
+{
+  "lat": 50.87,
+  "lon": 3.82,
+  "timezone": "Europe/Brussels",
+  "timezone_offset": 3600,
+  "daily": [
+    {
+      "dt": 1609326000,
+      "sunrise": 1609314439,
+      "sunset": 1609343230,
+      "temp": {
+        "day": 4.43,
+        "min": 0.86,
+        "max": 4.9,
+        "night": 2.87,
+        "eve": 2.8,
+        "morn": 1.58
+      },
+      "feels_like": {
+        "day": -0.81,
+        "night": -1.55,
+        "eve": -0.93,
+        "morn": -2.88
+      },
+      "pressure": 1003,
+      "humidity": 80,
+      "dew_point": 1.44,
+      "wind_speed": 4.93,
+      "wind_deg": 249,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "clouds": 95,
+      "pop": 0.63,
+      "rain": 0.64,
+      "uvi": 0.42
+    },
+    {
+      "dt": 1609412400,
+      "sunrise": 1609400838,
+      "sunset": 1609429687,
+      "temp": {
+        "day": 2.63,
+        "min": 1.68,
+        "max": 3.51,
+        "night": 1.68,
+        "eve": 2.7,
+        "morn": 2.42
+      },
+      "feels_like": {
+        "day": -1.98,
+        "night": -1.23,
+        "eve": -0.42,
+        "morn": -0.58
+      },
+      "pressure": 1002,
+      "humidity": 93,
+      "dew_point": 1.76,
+      "wind_speed": 4.1,
+      "wind_deg": 12,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "clouds": 100,
+      "pop": 0.8,
+      "rain": 3.53,
+      "uvi": 0.34
+    },
+    {
+      "dt": 1609498800,
+      "sunrise": 1609487234,
+      "sunset": 1609516147,
+      "temp": {
+        "day": 3.78,
+        "min": 1.01,
+        "max": 4.98,
+        "night": 1.01,
+        "eve": 3.58,
+        "morn": 1.78
+      },
+      "feels_like": {
+        "day": 1.22,
+        "night": -2.37,
+        "eve": 0.26,
+        "morn": -0.95
+      },
+      "pressure": 1011,
+      "humidity": 85,
+      "dew_point": 1.61,
+      "wind_speed": 1.15,
+      "wind_deg": 257,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "clouds": 98,
+      "pop": 0.45,
+      "rain": 0.74,
+      "uvi": 0.39
+    },
+    {
+      "dt": 1609585200,
+      "sunrise": 1609573626,
+      "sunset": 1609602609,
+      "temp": {
+        "day": 3.68,
+        "min": 0.21,
+        "max": 4.81,
+        "night": 0.75,
+        "eve": 1.38,
+        "morn": 0.24
+      },
+      "feels_like": {
+        "day": 0.32,
+        "night": -1.85,
+        "eve": -1.89,
+        "morn": -3.21
+      },
+      "pressure": 1016,
+      "humidity": 85,
+      "dew_point": 1.43,
+      "wind_speed": 2.27,
+      "wind_deg": 252,
+      "weather": [
+        {
+          "id": 801,
+          "main": "Clouds",
+          "description": "few clouds",
+          "icon": "02d"
+        }
+      ],
+      "clouds": 12,
+      "pop": 0.04,
+      "uvi": 0.52
+    },
+    {
+      "dt": 1609671600,
+      "sunrise": 1609660016,
+      "sunset": 1609689074,
+      "temp": {
+        "day": 2.69,
+        "min": 0.11,
+        "max": 2.69,
+        "night": 0.11,
+        "eve": 1.04,
+        "morn": 1
+      },
+      "feels_like": {
+        "day": -1.96,
+        "night": -4.03,
+        "eve": -2.85,
+        "morn": -2.19
+      },
+      "pressure": 1016,
+      "humidity": 81,
+      "dew_point": -0.67,
+      "wind_speed": 3.75,
+      "wind_deg": 34,
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "clouds": 7,
+      "pop": 0,
+      "uvi": 0.52
+    },
+    {
+      "dt": 1609758000,
+      "sunrise": 1609746402,
+      "sunset": 1609775541,
+      "temp": {
+        "day": 1.71,
+        "min": 0,
+        "max": 2.2,
+        "night": 2.12,
+        "eve": 2.2,
+        "morn": 0.39
+      },
+      "feels_like": {
+        "day": -2.63,
+        "night": -2.61,
+        "eve": -2.89,
+        "morn": -3.84
+      },
+      "pressure": 1015,
+      "humidity": 96,
+      "dew_point": 1.22,
+      "wind_speed": 3.61,
+      "wind_deg": 27,
+      "weather": [
+        {
+          "id": 500,
+          "main": "Rain",
+          "description": "light rain",
+          "icon": "10d"
+        }
+      ],
+      "clouds": 100,
+      "pop": 0.67,
+      "rain": 0.87,
+      "uvi": 0.2
+    },
+    {
+      "dt": 1609844400,
+      "sunrise": 1609832785,
+      "sunset": 1609862011,
+      "temp": {
+        "day": 2.6,
+        "min": 1.29,
+        "max": 2.6,
+        "night": 1.35,
+        "eve": 1.29,
+        "morn": 2.43
+      },
+      "feels_like": {
+        "day": -1.94,
+        "night": -1.5,
+        "eve": -2.2,
+        "morn": -2.06
+      },
+      "pressure": 1014,
+      "humidity": 96,
+      "dew_point": 2.15,
+      "wind_speed": 4.1,
+      "wind_deg": 30,
+      "weather": [
+        {
+          "id": 616,
+          "main": "Snow",
+          "description": "rain and snow",
+          "icon": "13d"
+        }
+      ],
+      "clouds": 98,
+      "pop": 0.89,
+      "rain": 1.51,
+      "snow": 1.96,
+      "uvi": 1
+    },
+    {
+      "dt": 1609930800,
+      "sunrise": 1609919165,
+      "sunset": 1609948483,
+      "temp": {
+        "day": 2.85,
+        "min": 0.2,
+        "max": 2.85,
+        "night": 0.2,
+        "eve": 0.79,
+        "morn": 1.43
+      },
+      "feels_like": {
+        "day": -1.6,
+        "night": -4.14,
+        "eve": -3.14,
+        "morn": -2.2
+      },
+      "pressure": 1016,
+      "humidity": 83,
+      "dew_point": 0.4,
+      "wind_speed": 3.58,
+      "wind_deg": 164,
+      "weather": [
+        {
+          "id": 600,
+          "main": "Snow",
+          "description": "light snow",
+          "icon": "13d"
+        }
+      ],
+      "clouds": 94,
+      "pop": 0.85,
+      "snow": 0.41,
+      "uvi": 1
+    }
+  ],
+  "alerts": [
+    {
+      "sender_name": "Royal Meteorological Institute of Belgium",
+      "event": "Geel Sneeuw/IJzel/Bevriezing Waarschuwingen",
+      "start": 1609437600,
+      "end": 1609455599,
+      "description": "Zowel tijdens het tweede deel van de nacht van woensdag op donderdag, als donderdag gedurende de dag, bereikt een neerslagzone ons land. In de Ardennen zorgt dit boven 200-300 m meestal voor sneeuw en kan er een sneeuwlaag van 1 tot 10 cm gevormd worden (soms zelfs meer dan 1 cm in enkele uren). Elders valt er regen of smeltende sneeuw, al kan tijdens intense perioden van neerslag tijdelijk een sneeuwlaagje blijven liggen, wat leidt tot een glad wegdek.Tijdens oudejaarsavond en -nacht verwachten we enkele lokale winterse buien. De licht negatieve temperaturen kunnen echter leiden tot de vorming van ijsplekken."
+    }
+  ]
+}

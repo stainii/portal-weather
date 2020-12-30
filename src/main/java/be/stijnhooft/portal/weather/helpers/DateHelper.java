@@ -1,7 +1,7 @@
 package be.stijnhooft.portal.weather.helpers;
 
+import be.stijnhooft.portal.model.weather.Forecast;
 import be.stijnhooft.portal.weather.dtos.Interval;
-import be.stijnhooft.portal.weather.forecasts.types.Forecast;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;

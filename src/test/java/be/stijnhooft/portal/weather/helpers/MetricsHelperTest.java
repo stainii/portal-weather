@@ -1,6 +1,6 @@
 package be.stijnhooft.portal.weather.helpers;
 
-import be.stijnhooft.portal.weather.forecasts.types.WindDirection;
+import be.stijnhooft.portal.model.weather.WindDirection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
