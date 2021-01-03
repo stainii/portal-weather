@@ -10,7 +10,7 @@
     </parent>
     <groupId>be.stijnhooft</groupId>
     <artifactId>portal-weather</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>portal-weather</name>
     <description>Provides weather services, like forecasts</description>
 
