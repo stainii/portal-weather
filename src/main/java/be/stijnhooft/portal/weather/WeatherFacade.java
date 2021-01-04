@@ -36,11 +36,14 @@ public class WeatherFacade {
 
         var location = findAndCacheLocation(locationUserInput).orElse(null);
         if (location == null) {
+            log.warn("Could not retrieve location {}", locationUserInput);
             return forecasts;
         }
 
-        Iterator<ForecastService> forecastServiceIterator = sortedAndEnabledForecastServicesIterator();
         Collection<LocalDate> remainingDays = dateHelper.getDaysBetween(startDateTime, endDateTime);
+        log.info("Looking for {} forecasts for {}", remainingDays.size(), locationUserInput);
+
+        Iterator<ForecastService> forecastServiceIterator = sortedAndEnabledForecastServicesIterator();
         while (!remainingDays.isEmpty() && forecastServiceIterator.hasNext()) {
             ForecastService forecastService = forecastServiceIterator.next();
 
