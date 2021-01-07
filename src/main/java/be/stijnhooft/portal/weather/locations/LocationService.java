@@ -28,7 +28,6 @@ public class LocationService {
                 .path("geocode")
                 .queryParam("query", locationUserInput)
                 .build()
-                .encode()
                 .toString();
         ResponseEntity<Location> response = restTemplate.getForEntity(url, Location.class);
 
